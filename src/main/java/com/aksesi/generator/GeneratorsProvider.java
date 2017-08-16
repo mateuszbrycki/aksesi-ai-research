@@ -1,13 +1,8 @@
 package com.aksesi.generator;
 
-import com.aksesi.generator.mutator.DefaultMutator;
 import com.aksesi.generator.shape.*;
-import org.jfree.ui.RefineryUtilities;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

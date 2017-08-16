@@ -12,13 +12,12 @@ import java.util.stream.IntStream;
  */
 public class TrainingService {
 
-    private static final Integer EPOCH_COUNT = 200;
-    private INeuralNetwork neuralNetwork;
+    private static final Integer EPOCH_COUNT = 50;
+    private INeuralNetwork neuralNetwork = new NeuralNetwork();
 
     private Logger log = Logger.getLogger(TrainingService.class);
 
-    public TrainingService(INeuralNetwork network) {
-        this.neuralNetwork = network;
+    public TrainingService() {
     }
 
     public void train(double[][] gestures, double[][] responses) {
@@ -27,7 +26,7 @@ public class TrainingService {
         log.info("The number of epoch " + EPOCH_COUNT);
 
         MLDataSet trainingSet = new BasicMLDataSet(gestures, responses);
-        Backpropagation backpropagation = new Backpropagation(neuralNetwork.getNetwork(), trainingSet, 0.7, 0.3);
+        Backpropagation backpropagation = new Backpropagation(neuralNetwork.getNetwork(), trainingSet, 0.5, 0.3);
 
         IntStream.range(0, EPOCH_COUNT)
                 .forEach((indx) -> backpropagation.iteration());
@@ -37,5 +36,8 @@ public class TrainingService {
         log.info("Training finished");
     }
 
-
+    public double test(double[][] gestures, double[][] responses) {
+        MLDataSet testingSet = new BasicMLDataSet(gestures, responses);
+        return neuralNetwork.getNetwork().calculateError(testingSet);
+    }
 }
