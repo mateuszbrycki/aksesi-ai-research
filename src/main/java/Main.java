@@ -8,11 +8,13 @@ import com.aksesi.network.TrainingService;
 import com.aksesi.storage.GestureFileStorage;
 import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -51,36 +53,35 @@ public class Main {
 
             List<LearningEntity> gestures = creator.create(numberOfGestures);
             List<LearningEntity> trainingSet = gestures.subList(0, (int)(gestures.size() * 0.8));
-
+            trainingSet.forEach(storage::save);
             List<LearningEntity> testingSet = new ArrayList<>(gestures);
             testingSet.removeAll(trainingSet);
 
-            train(trainingSet);
-            savePoints(trainingSet);
-            test(testingSet, batchNumber);
+
+            BatchProcessor.ProcessorResult processedTrainingSet = processor.process(trainingSet),
+                    processedTestingSet = processor.process(testingSet);
+
+            train(processedTrainingSet);
+            savePoints(processedTrainingSet);
+            test(processedTestingSet, batchNumber);
         };
 
-        private void savePoints(List<LearningEntity> set) {
-
-            set.forEach(storage::save);
-
+        private void savePoints(BatchProcessor.ProcessorResult set) {
+            storage.save(set.gestures);
         }
 
-        private void train(List<LearningEntity> trainingSet) {
+        private void train(BatchProcessor.ProcessorResult trainingSet) {
 
-            logger.info("Training the network with " + trainingSet.size() + " elements");
-
-            BatchProcessor.ProcessorResult result = processor.process(trainingSet);
-            trainingService.train(result.gestures, result.labels);
+            logger.info("Training the network with " + trainingSet.gestures.length + " elements");
+            trainingService.train(trainingSet.gestures, trainingSet.labels);
         }
 
-        private void test(List<LearningEntity> testingSet, Integer batchNumber) {
+        private void test(BatchProcessor.ProcessorResult testingSet, Integer batchNumber) {
 
-            logger.info("Testing the network with " + testingSet.size() + " for bath number " + batchNumber);
+            logger.info("Testing the network with " + testingSet.gestures.length + " for bath number " + batchNumber);
 
-            BatchProcessor.ProcessorResult result = processor.process(testingSet);
-            Double error = trainingService.test(result.gestures, result.labels);
-
+            Double error = (trainingService.test(testingSet.gestures, testingSet.labels) * 100.);
+            error = Math.rint(error) / 100.;
             logger.error("Error for batch " + batchNumber + " is equal " + error);
         }
 

@@ -16,9 +16,9 @@ public class NeuralNetwork implements INeuralNetwork {
         network = new BasicNetwork();
 
         network.addLayer(new BasicLayer(new ActivationSigmoid(),true, 400)); //input layer
-//        network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 300));
 //        network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 200));
-        network.addLayer(new BasicLayer(new ActivationSoftMax(), false, 5)); //output layer
+        network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 100));
+        network.addLayer(new BasicLayer(new ActivationSigmoid(), false, 5)); //output layer
         network.getStructure().finalizeStructure();
         network.reset();
     }

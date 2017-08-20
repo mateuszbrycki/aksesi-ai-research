@@ -25,10 +25,38 @@ public class GestureFileStorage {
 
     }
 
-    private File getDirectory(LearningEntity entity) {
-        File file = new File("/Users/mateusz-mac/Projects/aksesi-ai-research/" + entity.getGestureNumber());
+    public void save(final double[][] gestures) {
 
-        if(!file.exists()) {
+        File directory = getDirectory();
+        for (int gestureNumber = 0; gestureNumber < gestures.length; gestureNumber++) {
+            File file = new File(directory.getPath() + "/" + LocalDateTime.now() + ".txt");
+            try {
+                PrintStream out = new PrintStream(new FileOutputStream(file));
+
+                for (int i = 0; i < gestures[gestureNumber].length - 2; i = i + 2) {
+                    String result = gestures[gestureNumber][i] + " " + gestures[gestureNumber][i + 1] + "\r";
+                    out.print(result);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private File getDirectory() {
+        File file = new File("mixed/");
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        return file;
+    }
+
+    private File getDirectory(LearningEntity entity) {
+        File file = new File(entity.getGestureNumber().toString());
+
+        if (!file.exists()) {
             file.mkdirs();
         }
 
