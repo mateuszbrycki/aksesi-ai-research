@@ -19,33 +19,36 @@ import java.util.stream.IntStream;
  */
 public class BatchCreator {
 
-    private Map<Integer, IShapeGenerator> generators;
+    private List<IShapeGenerator> generators;
     private final Configuration configuration;
+
+    private final Integer PRINT_INFO = 1_000;
 
     Logger logger = Logger.getLogger(BatchCreator.class);
 
-    public BatchCreator(Configuration configuration, Map<Integer, IShapeGenerator> generators) {
+    public BatchCreator(Configuration configuration, List<IShapeGenerator> generators) {
         this.generators = generators;
         this.configuration = configuration;
     }
 
     public List<LearningEntity> create(Integer numberOfGestures) {
 
-        logger.info("Generating gestures for a batch.");
         List<LearningEntity> gestures = new ArrayList<>();
 
-        generators.entrySet()
-                .forEach(e -> {
-                    IShapeGenerator generator = e.getValue();
-                    GenerationStrategy strategy = new GenerationStrategy(
-                            new DefaultMutator(configuration), configuration);
+        GenerationStrategy strategy = new GenerationStrategy(
+                new DefaultMutator(configuration), configuration);
 
-                    IntStream.range(0, numberOfGestures)
-                            .forEach(gestureNumber -> {
-                                List<Point> gesture = strategy.generate(generator);
+        IntStream.range(0, numberOfGestures)
+                .forEach(gestureNumber -> {
 
-                                gestures.add(new LearningEntity(e.getKey(), gesture));
-                            });
+                    if ((gestureNumber % PRINT_INFO)==0) {
+                        logger.info("Generating " + gestureNumber);
+                    }
+
+                    IShapeGenerator generator = generators.get(gestureNumber % generators.size());
+
+                    List<Point> gesture = strategy.generate(generator);
+                    gestures.add(new LearningEntity(gestureNumber, generator.getCreatedShape(), gesture));
                 });
 
         Collections.shuffle(gestures);

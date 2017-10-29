@@ -16,11 +16,14 @@ public abstract class AbstractLineGenerator implements IShapeGenerator {
     protected Point startPoint;
     protected Point endPoint;
 
-    public AbstractLineGenerator(Configuration configuration) {
+    private final String createdShape;
+
+    public AbstractLineGenerator(Configuration configuration, String createdShape) {
         this.configuration = configuration;
 
         this.startPoint = createRandomPoint();
         this.endPoint = createRandomPoint();
+        this.createdShape = createdShape;
     }
 
     protected Point createRandomPoint() {
@@ -34,5 +37,9 @@ public abstract class AbstractLineGenerator implements IShapeGenerator {
         Float y = rand.nextFloat() * (max - min) + min;
 
         return new Point(x, y);
+    }
+
+    public String getCreatedShape() {
+        return createdShape;
     }
 }

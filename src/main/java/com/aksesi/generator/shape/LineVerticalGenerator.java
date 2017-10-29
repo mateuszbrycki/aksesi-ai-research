@@ -11,7 +11,7 @@ import java.util.Random;
 public class LineVerticalGenerator extends AbstractLineGenerator {
 
     public LineVerticalGenerator(Configuration configuration) {
-        super(configuration);
+        super(configuration, "LINE_VERTICAL");
     }
 
     @Override

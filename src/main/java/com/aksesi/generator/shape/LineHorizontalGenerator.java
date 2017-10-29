@@ -11,7 +11,7 @@ import java.util.Random;
 public class LineHorizontalGenerator extends AbstractLineGenerator {
 
     public LineHorizontalGenerator(Configuration configuration) {
-        super(configuration);
+        super(configuration, "LINE_HORIZONTAL");
     }
 
     @Override

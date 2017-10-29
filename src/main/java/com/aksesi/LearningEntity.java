@@ -10,27 +10,35 @@ import java.util.List;
 
 public class LearningEntity {
 
-    private Integer gestureNumber;
+    private Integer id;
+    private String gestureName;
     private List<Point> gesture;
 
 
-    public LearningEntity(Integer gestureNumber, List<Point> gesture) {
-        this.gestureNumber = gestureNumber;
+    public LearningEntity(Integer gestureNumber, String gestureName, List<Point> gesture) {
+        this.id = gestureNumber;
+        this.gestureName = gestureName;
         this.gesture = gesture;
 
     }
 
-    public Integer getGestureNumber() {
-        return gestureNumber;
+    public Integer getId() {
+        return id;
     }
 
     public List<Point> getGesture() {
         return gesture;
     }
 
+    public String getName() {
+        return gestureName;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        builder.append(this.gestureName)
+                .append("\n");
 
         gesture.forEach(e -> builder.append(e.getX() + " " + e.getY() + "\n"));
 

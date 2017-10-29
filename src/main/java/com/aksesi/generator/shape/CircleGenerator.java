@@ -44,6 +44,11 @@ public class CircleGenerator implements IShapeGenerator {
         return new Point(x, y);
     }
 
+    @Override
+    public String getCreatedShape() {
+        return "CIRCLE";
+    }
+
     protected Float getR() {
         return this.r;
     }

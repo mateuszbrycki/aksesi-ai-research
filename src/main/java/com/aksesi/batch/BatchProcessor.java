@@ -8,7 +8,6 @@ import com.aksesi.network.TrainingService;
 import com.aksesi.normalizer.GestureNormalizer;
 import com.aksesi.resizer.RepeatingResizer;
 import com.aksesi.supplier.FlattenPointsSupplier;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -25,21 +24,9 @@ public class BatchProcessor {
     );
 
     private Map<Integer, IShapeGenerator> generators;
-    private TrainingService trainingService;
 
     public BatchProcessor(Map<Integer, IShapeGenerator> generators, TrainingService trainingService) {
         this.generators = generators;
-        this.trainingService = trainingService;
-    }
-
-    Logger logger = Logger.getLogger(BatchProcessor.class);
-
-    public ProcessorResult process(List<LearningEntity> gestures) {
-
-        double normalizedGestures[][] = normalizeGestures(gestures);
-        double labels[][] = prepareLabels(gestures);
-
-        return new ProcessorResult(normalizedGestures, labels);
     }
 
     private double[][] prepareLabels(List<LearningEntity> gestures) {
@@ -50,7 +37,7 @@ public class BatchProcessor {
             double label[] = new double[generators.size()];
 
             for (int x = 0; x < label.length; x++) {
-                if (learningEntity.getGestureNumber() != x) {
+                if (learningEntity.getId() != x) {
                     label[x] = 0;
                 } else {
                     label[x] = 1;
@@ -78,12 +65,6 @@ public class BatchProcessor {
     }
 
     public static class ProcessorResult {
-        public final double[][] gestures;
-        public final double[][] labels;
 
-        public ProcessorResult(double[][] gestures, double[][] labels) {
-            this.gestures = gestures;
-            this.labels = labels;
-        }
     }
 }

@@ -6,4 +6,5 @@ package com.aksesi.generator;
 public interface IShapeGenerator {
 
     Point getPoint(Integer i);
+    String getCreatedShape();
 }

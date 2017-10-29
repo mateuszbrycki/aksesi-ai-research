@@ -11,7 +11,7 @@ import java.util.Random;
 public class LineDiagonalRightGenerator extends AbstractLineGenerator {
 
     public LineDiagonalRightGenerator(Configuration configuration) {
-        super(configuration);
+        super(configuration, "LINE_DIAGONAL_RIGHT");
     }
 
     @Override
