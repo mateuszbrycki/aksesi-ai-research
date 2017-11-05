@@ -1,7 +1,6 @@
 import numpy as np
 import gesture_type_converter as converter
 
-batch_size = 1000
 final_gesture_matrix_size = 30
 
 
@@ -54,7 +53,7 @@ def prepare_gesture_type(gesture_type):
     return converter.to_matrix(gesture_type)
 
 
-def load_batch(batch_number):
+def load_batch(batch_number, batch_size):
     starting_gesture = batch_size * batch_number
 
     x = np.zeros((batch_size, final_gesture_matrix_size, final_gesture_matrix_size))
