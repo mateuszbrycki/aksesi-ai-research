@@ -8,10 +8,10 @@ def conv2d(img, w, b):
 def max_pool(img, k):
         return tf.nn.max_pool(img, ksize=[1,k,k,1], strides=[1,k,k,1], padding='SAME')
 
-batch_size = 1
+batch_size = 128
 
 learning_rate = 0.001
-training_iters = 1000
+training_iters = 100000
 display_step = 10
 
 n_input = 900
@@ -61,8 +61,8 @@ with tf.Session() as sess:
     while step * batch_size < training_iters:
         batch_xs, batch_ys = input_data.load_batch(step, batch_size)
 
-        batch_xs = np.resize(batch_xs, (1, 900))
-        batch_ys = np.resize(batch_ys, (1, 5))
+        batch_xs = np.resize(batch_xs, (batch_size, 900))
+        # batch_ys = np.resize(batch_ys, (1, 5))
 
         sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys, keep_prob: dropout})
         if step % display_step == 0:

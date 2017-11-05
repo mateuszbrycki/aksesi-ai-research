@@ -45,12 +45,13 @@ def convert_to_array(gesture_points):
 
 def prepare_gesture_points(gesture_points):
     gesture_points = np.array(gesture_points).astype(np.float)
+    gesture_points = np.resize(gesture_points, (1, 900))
     result = convert_to_array(scale_points(0, final_gesture_matrix_size - 1, gesture_points))
     return result
 
 
 def prepare_gesture_type(gesture_type):
-    return converter.to_matrix(gesture_type)
+    return converter.get_number(gesture_type)
 
 
 def load_batch(batch_number, batch_size):

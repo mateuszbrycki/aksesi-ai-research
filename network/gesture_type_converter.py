@@ -10,3 +10,6 @@ def to_matrix(gesture_type):
     result[index] = 1
 
     return result
+
+def get_number(gesture_type):
+    return predefined_gestures.index(gesture_type)
